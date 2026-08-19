@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Demo Test</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/bootstrap.css') }}">
+</head>
+<body>
+<div class="container mt-5">
+    <h1 class="text-center">Demo Test</h1>
+
+    <!-- Form for generating MCQs -->
+    <form method="POST" action="{{ url_for('demo_test') }}">
+        <label>Topic:</label>
+        <input type="text" name="topic" required>
+        
+        <label>Difficulty:</label>
+        <select name="difficulty">
+            <option value="Easy">Easy</option>
+            <option value="Medium">Medium</option>
+            <option value="Hard">Hard</option>
+        </select>
+        
+        <button type="submit" name="generate_mcqs" class="btn btn-primary">Generate MCQs</button>
+    </form>
+
+    {% if mcqs %}
+    <form method="POST" action="{{ url_for('demo_test') }}">
+        <h2 class="mt-4">Answer the following questions:</h2>
+
+        {% for idx, mcq in enumerate(mcqs) %}
+        <div class="card mt-3">
+            <div class="card-body">
+                <h5>{{ idx + 1 }}. {{ mcq['question'] }}</h5>
+
+                {% for opt_idx, option in enumerate(mcq['options']) %}
+                <div>
+                    <input type="radio" name="answer_{{ idx }}" value="{{ option[0] }}" required> 
+                    {{ option }}
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+        {% endfor %}
+        
+        <button type="submit" name="submit_demo" class="btn btn-success mt-4">Submit Demo</button>
+    </form>
+    {% endif %}
+
+    {% if scores %}
+    <h3 class="mt-4">Scores:</h3>
+    <ul>
+        {% for score in scores %}
+        <li>Score: {{ score }}/{{ mcqs|length }}</li>
+        {% endfor %}
+    </ul>
+    {% endif %}
+</div>
+</body>
+</html>

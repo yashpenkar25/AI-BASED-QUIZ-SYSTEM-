@@ -1,0 +1,81 @@
+<!-- Quiz Generation Page -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quiz Generator</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <style>
+        /* Style for the back button */
+        .back-btn {
+            margin: 10px;
+            padding: 10px 20px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            cursor: pointer;
+            text-decoration: none;
+            display: inline-block;
+        }
+        .back-btn:hover {
+            background-color: #45a049;
+        }
+    </style>
+</head>
+<body>
+
+<!-- Back Button -->
+<a href="{{ url_for('ps_portal') }}" class="back-btn">⬅️ Back to Paper Setter Portal</a>
+
+<h1>Generated Quiz</h1>
+
+<form method="POST" action="{{ url_for('quiz_generator') }}" enctype="multipart/form-data">
+    <label>Input Type:</label>
+    <select name="input-type">
+        <option value="topic">Topic</option>
+        <option value="pdf">PDF</option>
+    </select>
+
+    <label>Number of Questions:</label>
+    <input type="number" name="num-questions" value="5" min="1" required>
+
+    <label>Enter Topic:</label>
+    <input type="text" name="topic" placeholder="Enter topic">
+    
+    <label>Upload PDF:</label>
+    <input type="file" name="pdf-file">
+
+    <button type="submit">Generate Quiz</button>
+</form>
+
+<h2>Questions</h2>
+
+{% if mcqs %}
+    {% for mcq in mcqs %}
+    <div class="question">
+        <p><strong>Q:</strong> {{ mcq.question }}</p>
+        <ul>
+            {% for option in mcq.options %}
+            <li>{{ option }}</li>
+            {% endfor %}
+        </ul>
+        <p><strong>Correct Answer:</strong> {{ mcq.correct_answer }}</p>
+
+        <!-- Add to Test Form -->
+        <form method="POST" action="{{ url_for('add_quiz_question') }}">
+            <input type="hidden" name="question" value="{{ mcq.question }}">
+            <input type="hidden" name="options" value="{{ ','.join(mcq.options) }}">
+            <input type="hidden" name="correct_answer" value="{{ mcq.correct_answer }}">
+            <input type="hidden" name="marks" value="1">  
+            <button type="submit">Add to Test</button>
+        </form>
+    </div>
+    <hr>
+    {% endfor %}
+{% else %}
+    <p>No questions generated yet.</p>
+{% endif %}
+
+</body>
+</html>

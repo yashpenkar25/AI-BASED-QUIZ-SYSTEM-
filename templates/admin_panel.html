@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Admin Panel - Approve Paper Setters</title>
+    <link rel="stylesheet" href="https://unpkg.com/bulma@0.7.4/css/bulma.min.css">
+</head>
+<body>
+    <section class="container">
+        <h2 class="title">Admin Panel - Approve Paper Setters</h2>
+
+        <table class="table is-striped">
+            <thead>
+                <tr>
+                    <th>Email</th>
+                    <th>Role</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for user in users %}
+                <tr>
+                    <td>{{ user[0] }}</td>
+                    <td>{{ user[1] }}</td>
+                    <td>
+                        {% if user[1] == "candidate" %}
+                        <form action="/approve_ps" method="POST">
+                            <input type="hidden" name="email" value="{{ user[0] }}">
+                            <button class="button is-success" type="submit">Approve as Paper Setter</button>
+                        </form>
+                        {% else %}
+                        <button class="button is-info" disabled>Already Paper Setter</button>
+                        {% endif %}
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </section>
+</body>
+</html>

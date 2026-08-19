@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Admin Login</title>
+    <link rel="stylesheet" href="https://unpkg.com/bulma@0.7.4/css/bulma.min.css">
+</head>
+<body>
+    <section class="container">
+        <h2 class="title">Admin Login</h2>
+        <form action="/admin_login" method="POST">
+            <div class="field">
+                <label class="label">Email:</label>
+                <input class="input" type="email" name="email" required>
+            </div>
+            <div class="field">
+                <label class="label">Password:</label>
+                <input class="input" type="password" name="password" required>
+            </div>
+            <button class="button is-primary" type="submit">Login</button>
+        </form>
+    </section>
+</body>
+</html>
